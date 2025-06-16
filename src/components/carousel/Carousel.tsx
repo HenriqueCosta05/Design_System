@@ -34,20 +34,36 @@ const Carousel: React.FC<CarouselProps> = ({
   React.useEffect(() => {
     if (!glideRef.current) return;
 
-    const options = {
+    const options: Partial<Glide.Options> = {
       type: "carousel",
       focusAt,
       perView: 1,
       autoplay: autoplay ? autoplaySpeed : false,
       animationDuration: 700,
-      gap,
+      gap: parseInt(gap, 10) || 24,
       classes: {
-        nav: {
-          active: "[&>*]:bg-primary",
+        swipeable: 'glide--swipeable',
+        dragging: 'glide--dragging',
+        direction: {
+          ltr: 'glide--ltr',
+          rtl: 'glide--rtl'
         },
+        type: {
+          slider: 'glide--slider',
+          carousel: 'glide--carousel'
+        },
+        slide: {
+          active: 'glide__slide--active',
+          clone: 'glide__slide--clone'
+        },
+        arrow: {
+          disabled: 'glide__arrow--disabled'
+        },
+        nav: {
+          active: "[&>*]:bg-primary"
+        }
       },
     };
-
     const variantName = getGlideClassName();
     const selector = `.${variantName}`;
     
@@ -71,7 +87,7 @@ const Carousel: React.FC<CarouselProps> = ({
         glideInstance.current = null;
       }
     };
-  }, [variant, autoplay, autoplaySpeed, items, focusAt, gap, onSlideChange]);
+  }, []);
 
   const renderControls = () => {
     const controlsClassName = variant.includes('outside') 

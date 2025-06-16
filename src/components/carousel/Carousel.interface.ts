@@ -8,7 +8,9 @@ export interface CarouselProps {
     autoplaySpeed?: number;
     focusAt?: number;
     gap?: string;
-    classNames?: any
+    classNames?: any;
 }
 
 export type CarouselVariant = 'inside-control' | 'outside-control' | 'indicator-outside' | 'indicator-inside' | 'indicator-and-control-inside' | 'with-cards' | 'testimonials' | 'logo';
+
+export type CarouselType = 'slider' | 'carousel';

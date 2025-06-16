@@ -1,4 +1,4 @@
-import { Carousel } from '@/components';
+import { Carousel } from '../components';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import React from 'react';
 
