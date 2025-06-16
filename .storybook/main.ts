@@ -5,15 +5,9 @@ const config: StorybookConfig = {
     "../src/**/*.mdx",
     "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
   ],
-  "addons": [
-    "@storybook/addon-onboarding"
-  ],
   "framework": {
     "name": "@storybook/nextjs",
     "options": {}
   },
-  "staticDirs": [
-    "..\\public"
-  ]
 };
 export default config;

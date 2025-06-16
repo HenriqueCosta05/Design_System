@@ -1,6 +1,9 @@
 import React from "react";
 import { CarouselProps } from "./Carousel.interface";
 import Glide from "@glidejs/glide";
+import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
+import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
+import Image from "next/image";
 
 const Carousel: React.FC<CarouselProps> = ({
   variant = "inside-control",
@@ -12,11 +15,11 @@ const Carousel: React.FC<CarouselProps> = ({
   autoplaySpeed = 3000,
   focusAt = "center",
   gap = "24px",
-  classNames = {}
+  classNames
 }) => {
   const glideRef = React.useRef<HTMLDivElement>(null);
   const glideInstance = React.useRef<Glide | null>(null);
-  
+
   const getGlideClassName = () => {
     switch (variant) {
       case "inside-control": return "glide-01";
@@ -66,19 +69,19 @@ const Carousel: React.FC<CarouselProps> = ({
     };
     const variantName = getGlideClassName();
     const selector = `.${variantName}`;
-    
+
     if (glideInstance.current) {
       glideInstance.current.destroy();
     }
-    
+
     glideInstance.current = new Glide(selector, options);
-    
+
     if (onSlideChange) {
       glideInstance.current.on("move.after", () => {
         onSlideChange(glideInstance.current?.index || 0);
       });
     }
-    
+
     glideInstance.current.mount();
 
     return () => {
@@ -90,53 +93,25 @@ const Carousel: React.FC<CarouselProps> = ({
   }, []);
 
   const renderControls = () => {
-    const controlsClassName = variant.includes('outside') 
-      ? "flex w-full items-center justify-center gap-2 p-4" 
+    const controlsClassName = variant.includes('outside')
+      ? "flex w-full items-center justify-center gap-2 p-4"
       : "absolute left-0 top-1/2 flex h-0 w-full items-center justify-between px-4";
-    
+
     return (
       <div className={controlsClassName} data-glide-el="controls">
         <button
-          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-700 bg-white/20 text-slate-700 transition duration-300 hover:border-slate-900 hover:text-slate-900 focus-visible:outline-none lg:h-12 lg:w-12"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-background bg-white/20 text-background transition duration-300 hover:border-slate-900 hover:text-slate-900 focus-visible:outline-none lg:h-12 lg:w-12"
           data-glide-dir="<"
           aria-label="prev slide"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="h-5 w-5"
-          >
-            <title>prev slide</title>
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
-            />
-          </svg>
+          <ArrowBackIosNewOutlinedIcon className="h-5 w-5" />
         </button>
         <button
-          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-700 bg-white/20 text-slate-700 transition duration-300 hover:border-slate-900 hover:text-slate-900 focus-visible:outline-none lg:h-12 lg:w-12"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-background bg-white/20 text-background transition duration-300 hover:border-slate-900 hover:text-slate-900 focus-visible:outline-none lg:h-12 lg:w-12"
           data-glide-dir=">"
           aria-label="next slide"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="h-5 w-5"
-          >
-            <title>next slide</title>
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
-            />
-          </svg>
+          <ArrowForwardIosOutlinedIcon className="h-5 w-5" />
         </button>
       </div>
     );
@@ -144,11 +119,11 @@ const Carousel: React.FC<CarouselProps> = ({
 
   const renderIndicators = () => {
     if (!items || items.length === 0) return null;
-    
+
     const indicatorsClassName = variant.includes('indicator-outside') || variant === 'testimonials'
       ? "flex w-full items-center justify-center gap-2"
       : "absolute bottom-0 flex w-full items-center justify-center gap-2";
-    
+
     return (
       <div className={indicatorsClassName} data-glide-el="controls[nav]">
         {items.map((_, index) => (
@@ -158,7 +133,7 @@ const Carousel: React.FC<CarouselProps> = ({
             data-glide-dir={`=${index}`}
             aria-label={`goto slide ${index + 1}`}
           >
-            <span className="block h-2 w-2 rounded-full bg-white/20 ring-1 ring-slate-700 transition-colors duration-300 focus:outline-none"></span>
+            <span className="block h-2 w-2 rounded-full bg-white/20 ring-1 ring-background transition-colors duration-300 focus:outline-none"></span>
           </button>
         ))}
       </div>
@@ -169,18 +144,20 @@ const Carousel: React.FC<CarouselProps> = ({
     if (typeof item === 'string' || item.src) {
       const imgSrc = typeof item === 'string' ? item : item.src;
       return (
-        <img
+        <Image
           src={imgSrc}
           alt={item.alt || `Slide ${index + 1}`}
+          width={item.width || 800}
+          height={item.height || 600}
           className="m-auto max-h-full w-full max-w-full object-contain"
           style={item.style || {}}
         />
       );
     }
-    
+
     if (item.content) {
       return variant === 'testimonials' ? (
-        <div className="h-full overflow-hidden rounded bg-white text-slate-500 shadow-2xl shadow-slate-200">
+        <div className="h-full overflow-hidden rounded bg-white text-primary shadow-2xl shadow-slate-200">
           <div className="relative p-6">
             <figure className="relative z-10">
               <blockquote className="p-6 text-lg leading-relaxed">
@@ -193,11 +170,11 @@ const Carousel: React.FC<CarouselProps> = ({
                   )}
                   <div className="flex items-center gap-4 pt-4 text-sm text-emerald-500">
                     {item.author.avatar && (
-                      <img
+                      <Image
                         src={item.author.avatar}
                         alt={item.author.name}
-                        width="48"
-                        height="48"
+                        width={24}
+                        height={24}
                         className="max-w-full shrink-0 rounded-full"
                       />
                     )}
@@ -228,19 +205,19 @@ const Carousel: React.FC<CarouselProps> = ({
           </div>
         </div>
       ) : (
-        <div>{item.content}</div>
+        <>{item.content}</>
       );
     }
-    
+
     return <div>{item}</div>;
   };
 
   const containerClassName = (() => {
-    const baseClassName = variant === 'with-cards' 
+    const baseClassName = variant === 'with-cards'
       ? `${getGlideClassName()} relative overflow-hidden rounded bg-white shadow-xl shadow-slate-200`
       : `${getGlideClassName()} relative`;
-    
-    const customClass = classNames?.container || '';
+
+    const customClass = classNames || '';
     return `${baseClassName} ${customClass}`.trim();
   })();
 
@@ -248,7 +225,7 @@ const Carousel: React.FC<CarouselProps> = ({
     width: itemWidth || '100%',
     height: itemHeight || 'auto',
     maxWidth: '100%',
-    maxHeight: itemHeight || '100%' 
+    maxHeight: itemHeight || '100%'
   };
 
   const slideItems = items.length > 0 ? items : [
@@ -270,7 +247,7 @@ const Carousel: React.FC<CarouselProps> = ({
           ))}
         </ul>
       </div>
-      
+
       {renderControls()}
       {renderIndicators()}
     </div>

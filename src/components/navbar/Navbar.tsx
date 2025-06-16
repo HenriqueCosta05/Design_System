@@ -78,7 +78,6 @@ const Navbar = (Props: NavbarProps) => {
         </a>
     );
 
-    // Common navigation menu - used in all navbar types
     const renderNavMenu = () => (
         <ul
             role="menubar"
